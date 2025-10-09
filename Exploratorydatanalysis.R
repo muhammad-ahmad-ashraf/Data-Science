@@ -1,37 +1,24 @@
-# Load libraries
+
 library(dplyr)
 library(ggplot2)
 library(tidyr)
 library(scales)
 library(corrplot)
 
-# Load the dataset
 data("EuStockMarkets")
 head(EuStockMarkets)
 
-
-# Convert to dataframe for easy manipulation
 stocks <- as.data.frame(EuStockMarkets)
 
-# Add a date variable
-# The dataset starts in 1991 and has 260 observations per year (trading days)
 stocks$date <- seq(as.Date("1991-01-01"), by = "days", length.out = nrow(stocks))
 
-# Inspect
 glimpse(stocks)
 summary(stocks)
-
 View(stocks)
 
-# Check missing values
 colSums(is.na(stocks))
 
-# Handle duplicates (none expected)
 stocks <- stocks %>% distinct()
-
-# Scale/normalize numeric columns (optional for comparison)
-stocks_scaled <- stocks %>%
-  mutate(across(c(DAX, SMI, CAC, FTSE), scale, .names = "scaled_{.col}"))
 
 # univariate analysis
 # Due to time series, line plot is best
